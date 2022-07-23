@@ -1,0 +1,30 @@
+# Herunterladen der Daten
+main.py # Hauptprogramm fuer das Herunterladen der Daten
+
+    Auswertung der Startparameter Anzahl Stunden,
+    sonst Anzeige des letzten Downloads
+
+    API-Key setzen
+
+    binance connector
+
+    Varaiblen vorbelegen
+
+    Update DB.binance_pairs Prioritaet auf 0 setzen
+
+    Select der DB.binance_pairs zum Herunterladen
+
+    for 
+        connector.binance_api.GetHistoricalData
+
+        keine Daten = pair merken in listNULL
+
+        Daten der pairs in DB.binance_price_temp speichern
+
+        INSERT IGNORE INTO DB.binance_price 
+
+         Update DB.binance_pairs Prioritaet auf 1 setzen 
+
+Liste listNULL in DB.binance_pairsNoPrice speichern
+
+Ende Download

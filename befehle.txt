@@ -1,0 +1,14 @@
+pip install python-binance
+
+wenn
+  pip install ta-lib
+nicht funktioniert, dann:
+  https://www.lfd.uci.edu/~gohlke/pythonlibs/#ta-lib
+  Auswahl Python Interpreter und Prozessor
+  pip install TA_Lib-0.4.24-cp38-cp38-win_amd64.whl
+
+pip install pandas
+
+pip install matplotlib
+
+pip freeze > requirements.txt

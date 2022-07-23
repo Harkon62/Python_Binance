@@ -1,0 +1,55 @@
+# Auswerten der Daten
+main.py # Hauptprogramm fuer das Herunterladen der Daten
+    Auswertung der Startparameter
+
+    if loop   
+        def modul_db.empty_DB_Table         #Tabellen leeren
+
+        loop
+            def modul_db.volume_getdata     # DB.finance.volume erzeugen
+
+            Datensatz in DB.binance_pairs mit Prioritaet = 1 ?
+
+            if ja
+                pair aus DB holen
+
+                m_evaluation_price.pairs_auswertung
+
+                Datensatz in DB.binance_pairs mit Prioritaet 2 setzen
+
+            else
+                sind noch Datensatz in DB.binance_pairs
+                         mit Prioritaet 0 vorhanden
+
+                if ja
+                    sleep
+    else
+        def modul_db.empty_DB_Table         #Tabellen leeren
+
+        def modul_db.volume_getdata     # DB.finance.volume erzeugen
+
+        Datensaetze in DB.binance_pairs holen
+
+        for 
+           m_evaluation_price.pairs_auswertung
+
+           m_eval_inter_tgl.start_Auswertung
+           
+Ende der Auswertung
+
+
+-----------------------------------------------------------------
+def pairs_auswertung
+    # Daten aus DB.binance_price  holen
+
+    # 1. Daten auswerten Interval, Parameter Anzahl und Minuten
+
+    # 2. Daten auswerten, ob price ueber GD200, Rückgabewert = Python Liste
+
+    # 3. Daten auswerten Volumen-Anstieg
+
+
+
+
+
+    
