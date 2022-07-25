@@ -31,16 +31,13 @@
         "key": "kmBBsmj96FRpAPRAYaoLW57P16TokLUHYPrv0aW5GoPwAF70ZwNepYLQ7rlo1cXn",
         "secret": "zYpsuZjm0pahwcKOs6DPAJqski0MMJwXuCZJfkNfmBCopxF0chfEMjlReJVIij2w",
         "pair_whitelist": [
-            "OM/USDT",
-            "UNFI/USDT",
-            "GTO/USDT",
-            "PERL/USDT",
-            "WTC/USDT",
-            "ATM/USDT",
-            "NBS/USDT",
-            "NULS/USDT",
-            "COS/USDT",
-            "AKRO/USDT"
+            "ETC/USDT",
+            "TWT/USDT",
+            "BNX/USDT",
+            "ENS/USDT",
+            "KNC/USDT",
+            "UNI/USDT",
+            "ERN/USDT"
         ],
         "pair_blacklist": [],
         "log_responses": true,
