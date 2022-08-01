@@ -2,8 +2,9 @@ from datetime import datetime
 import getopt
 import sys
 from connector.binance_api import GetHistoricalData
-import modify_gd200
+
 from binance.client import Client
+
 from sqlalchemy import create_engine, Table, Column, Integer, String, DateTime, Float, MetaData 
 import pandas as pd
 from pandas.io import sql
@@ -11,11 +12,35 @@ import sys
 import os
 import time
 
-from backup.modul_db import connect_db_engine, getPairsPrice, ActPriceInTable 
+from modul_db import connect_db_engine, getPairsPrice, ActPriceInTable 
 from modul_TradingView import GetTAfromTV
     
 
-    
+# Pairs DB.binance_pairs nach Rangliste in DB.binance_gd200 sortieren
+def setPairsPrioritaet(dfpairs, dfpairs200):
+
+    dfpairs.loc[:, 'Prioritaet'] = 9999
+
+
+    # Dataframe durchlaufen um  Daten abzurufen
+    for index, row in df_pairs200.iterrows():
+        pair = row["pairs"]
+        RecPos = index
+
+        # Spalte close mit lowma vergleichen, Ergebnis = True = 1 setzen
+        dfpairs.loc[
+        (
+            (dfpairs['pairs'] == pair)
+        ),
+        'Prioritaet'] = RecPos + 1
+
+    dfpairs.sort_values('Prioritaet', inplace=True)
+
+
+    return dfpairs
+
+
+
 def main(argv):
 
    inputfile = ''
@@ -62,54 +87,59 @@ if __name__ == '__main__':  # Execute the following code only when executing mai
         engine = connect_db_engine()
 
         df_max = pd.read_sql("SELECT MAX(TimeCET) FROM binance_price", engine)
-        print(df_max)
 
         # Datenbankverbindung loesen
         engine.dispose()
 
         sys.exit()
         
-        # print("Standard = 30")
     #"""
 
-    # paraHours = 2
+    #paraHours = 10
     
     while True:
 
         # Verbindung mit Datenbank aufbauen
         engine = connect_db_engine() 
 
+
         # Startzeit der Verarbeitung in Variable speichern
         dBeginDown = datetime.now()
         
-        api_key = "YRh7OHf8IUjumPzc27pVsE4VJKdR8kT7a9oRxDtREpMsivQ6wZ6XwXH3eVcFDHpc"
-        api_secret = "9CCnqUKby6t6PDbIYj7vBBXg7WNXsUIXnrxpA3vIttKfXGuVmiLpTsqsFZu1fdkH"
 
         # Verbindung mit Binance-API herstellen
+        api_key = "YRh7OHf8IUjumPzc27pVsE4VJKdR8kT7a9oRxDtREpMsivQ6wZ6XwXH3eVcFDHpc"
+        api_secret = "9CCnqUKby6t6PDbIYj7vBBXg7WNXsUIXnrxpA3vIttKfXGuVmiLpTsqsFZu1fdkH"
         client = Client(api_key, api_secret)
-        
+
+
         # Setup der Variablen
         howLong = 1
         dayAgo = str(paraHours) + " hours ago UTC"
         print(dayAgo)
         
+
         #symbol = "SOLUSDT"
+
         interval = Client.KLINE_INTERVAL_5MINUTE
         intervalDB = 5
         
-        # DB Tabellen löschen
-        #empty_DB_Table(engine)
-        
-        # Status in binance_pairs auf Prioritaet = 0 setzen
-        #rs = engine.execute("UPDATE binance_pairs SET Prioritaet=0")
         
         # Abruf der cryptos aus DB
-        df_pairs = pd.read_sql('SELECT pairs FROM binance_pairs WHERE Prioritaet=1', engine)
+        df_pairs = pd.read_sql('SELECT * FROM binance_pairs WHERE Prioritaet > 0', engine)
         # df_pairs.to_csv("./csv/" + "pairs" + "_full.csv", decimal=", ")
         df_len = len(df_pairs)
+
+
+        # Abruf der cryptos aus DB GD200
+        df_pairs200 = pd.read_sql('SELECT pairs FROM `binance_gd200` ORDER BY `startDate` DESC', engine)
         
+
+        # pairs aus DB holen und nach Prioritaet Reihenfolge fuer den Downloads setzen
+        df_pairs = setPairsPrioritaet(df_pairs, df_pairs200)
+
+
         forcnt = 1
-        
         listNull = []     
             
         # Dataframe durchlaufen um die Daten abzurufen
