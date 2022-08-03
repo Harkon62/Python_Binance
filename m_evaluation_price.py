@@ -137,7 +137,7 @@ def pairs_auswertung(pair, pairTA, engine):
         # Daten in binance_gd200 speichern
         dfgd.to_sql("binance_gd200", engine, if_exists='append')
 
-
+        """"
         print("Telegram Nachricht senden ?")
         # Aktualitaet der Nachricht pruefen, nicht aelter als ?? min und Trendanalyse
         iprice = listGD[2]
@@ -157,7 +157,7 @@ def pairs_auswertung(pair, pairTA, engine):
             subprocess.call('Bat_Copy_config.bat', timeout=5)
 
             savePairsGD200inTV(engine, 'USDT')
-
+        """
 
     """
     # 3. Daten auswerten Volumen-Anstieg---------------------------------------------------------------------------------------------------------
