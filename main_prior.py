@@ -3,8 +3,8 @@ import getopt
 import sys
 import sys
 import os
-import threading
 import time
+import logging
 
 from connector.binance_api import GetHistoricalData
 from binance.client import Client
@@ -16,22 +16,6 @@ from pandas.io import sql
 from modul_db import connect_db_engine, getPairsPrice, ActPriceInTable
 from modul_TradingView import GetTAfromTV
 
-
-class myThread (threading.Thread):
-    def __init__(self, threadID, name, engine, client, df_pairs):
-        threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.name = name
-        self.counter = engine
-        self.client = client
-        self.df_pairs = df_pairs
-
-    def run(self):
-        print ("Starting " + self.name)
-
-        getPairsDataFromExchange(engine, client, df_pairs)
-
-        print ("Exiting " + self.name)
 
 
 # Pairs DB.binance_pairs nach Rangliste in DB.binance_gd200 sortieren
@@ -56,7 +40,7 @@ def setPairsPrioritaet(dfpairs, dfpairs200):
     return dfpairs
 
 
-def getPairsDataFromExchange(engine, client, df_pairs):
+def getPairsDataFromExchange(engine, client, df_pairs, tmp_table):
 
     # Dataframe durchlaufen um die Daten abzurufen ------------------------------------------------------------
     forcnt = 1
@@ -85,15 +69,20 @@ def getPairsDataFromExchange(engine, client, df_pairs):
         df.insert(1, "interval", intervalDB)
 
         # Daten temporaer in binance_price_temp speichern
-        df.to_sql("binance_price_temp", engine, if_exists='replace')
+        engine.execute("DROP TABLE IF EXISTS " + "binance_price_temp_" + tmp_table)
+        tmpStr = "binance_price_temp_" + tmp_table
+        print(tmpStr)
+        df.to_sql(tmpStr, engine, if_exists='replace')
 
         # Daten von binance_price_temp nach binance_price verschieben
         # rs = engine.execute('INSERT IGNORE INTO binance_price SELECT * FROM binance_price_temp')
-        rs = engine.execute("""
+        strsql = """
                 INSERT INTO binance_price(`TimeCET`, `pairs`, `interval`, `open`, `high`, `low`, `close`, `volume`)
-                SELECT * FROM binance_price_temp t
+                SELECT * FROM binance_price_temp_""" + tmp_table + """ t
                 ON DUPLICATE KEY UPDATE `open`=t.`open`, `high`=t.`high`, `low`=t.low, `close`=t.close, `volume`=t.volume
-                        """)
+                        """
+        # print(strsql)
+        rs = engine.execute(strsql)
 
         # Technische Analyse von TradingView holen und in DB.binance_pairs speichern
         pairTA = GetTAfromTV(pair)
@@ -152,7 +141,7 @@ if __name__ == '__main__':
     print('Number of arguments:', len(sys.argv), 'arguments.')
     print('Argument List:', str(sys.argv))
 
-    """
+    #""""
     args = sys.argv
     if len(sys.argv) > 1:
         
@@ -172,9 +161,9 @@ if __name__ == '__main__':
 
         sys.exit()
         
-    """
+    #"""
 
-    paraHours = 10
+    # paraHours = 10
 
     while True:
 
@@ -202,8 +191,12 @@ if __name__ == '__main__':
         # Abruf der cryptos aus DB
         df_pairs = pd.read_sql(
             'SELECT * FROM binance_pairs WHERE Prioritaet > 0', engine)
-        # df_pairs.to_csv("./csv/" + "pairs" + "_full.csv", decimal=", ")
         df_len = len(df_pairs)
+        print("full " + str(df_len))
+
+        # Daten speichern in csv
+        # df_pairs.to_csv("./csv/pairs_full.csv", decimal=";")
+
 
         # Abruf der cryptos aus DB GD200
         df_pairs200 = pd.read_sql(
@@ -212,20 +205,30 @@ if __name__ == '__main__':
         # pairs aus DB.binance_pairs holen und nach Prioritaet fuer den Downloads setzen
         df_pairs = setPairsPrioritaet(df_pairs, df_pairs200)
 
+        # Daten speichern in csv
+        # df_pairs.to_csv("./csv/pairs_gdsort.csv", decimal=",")
 
-        # Create new threads für Download der ersten 00 pairs
-        df_pairs200 = df_pairs.loc[:50]
-        thread1 = myThread(1, "Thread-GD200", engine, client, df_pairs)
-        # Start new Threads
-        thread1.start()
+        # Pairs splitten nach GD200 und Rest
+        df_pairs200 = df_pairs.iloc[:50]
+        print("full " + str(len(df_pairs200)))
 
+        # Daten speichern in csv
+        # df_pairs200.to_csv("./csv/pairs_gd200.csv", decimal=",")
 
+        df_pairs = df_pairs.iloc[50:]
+        print("full " + str(len(df_pairs)))
+
+        # Daten speichern in csv
+        # df_pairs.to_csv("./csv/pairs_gdrest.csv", decimal=",")
+
+    
         # Durchlauf df, Daten von Exchange holen
-        df_pairs = df_pairs.loc[51:]
-        listNull = getPairsDataFromExchange(engine, client, df_pairs)
+        listNull = getPairsDataFromExchange(engine, client, df_pairs200, "th")
 
+        listNull = getPairsDataFromExchange(engine, client, df_pairs, "rest")
 
         # Abschlussarbeiten nach Download ------------------------------------------------
+
 
         # pairs ohne price aus download in DB-Tabelle und CSV speichern
         print("pairs ohne price aus download in DB-Tabelle und CSV speichern")
@@ -246,6 +249,7 @@ if __name__ == '__main__':
 
         # Datenbankverbindung loesen
         engine.dispose()
+
 
         # Loop Zeit nach indivueller Eingabe auf 1Std zurücksetzen
         paraHours = 1
