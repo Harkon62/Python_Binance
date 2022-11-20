@@ -36,7 +36,7 @@ def GetGD200Data(df, symbol):
     # df.to_csv("./csv/" + symbol + "_2buy.csv", decimal=",")
     # df.to_sql("binance_gd200_temp", engine, if_exists='replace')
 
-    # Spalte close mit lowma vergleichen, Ergebnis = True = 1 setzen
+    # Spalte close groesser lowma , Ergebnis = True = 1 setzen
     df.loc[
         (
             (df['lowma'] < df['close'])
@@ -108,6 +108,7 @@ def GetGD200Data(df, symbol):
         # 7 Tage x 24Std x 12Einheiten(5m) = 2016
         # 3 Tage x 24Std x 12Einheiten(5m) = 864
         # 2 Tage x 24Std x 12Einheiten(5m) = 576
+        #          12Std x 12Einheiten(5m) = 144
 
         # print(df.tail(5))
         # print(df.head(5))
@@ -122,7 +123,18 @@ def GetGD200Data(df, symbol):
             listProfit.append(df_buy_len)
         else:
             listProfit.append(0)
-        
+
+        # Wieviele Tage befand sich das Close ueber dem GD ?
+        if df_len >= 144:
+            # Werte aus ?? Zeit-Intervallen
+            df_gd = df.tail(144)
+            
+            # nur die Werte mit close > gd200
+            df_buy_len = df_gd.query("buy == 1").shape[0]
+            listProfit.append(df_buy_len)
+        else:
+            listProfit.append(0)
+                    
     print("                   beendet ###########################################")    
          
     return listProfit

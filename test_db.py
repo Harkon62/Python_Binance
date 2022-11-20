@@ -8,7 +8,7 @@ import sys
 import pandas as pd
 
 from backup.modul_db import connect_db_engine,  getMaxDateInDB
-
+from modul_db import connect_db_engine_two
 
 def connect_db():
   mydb = mysql.connector.connect(
@@ -48,7 +48,7 @@ def connect_db_maria():
     return mydb
 
 
-engine = connect_db_engine()
+""" engine = connect_db_engine()
 
 dfmax = getMaxDateInDB(engine)
 
@@ -59,7 +59,9 @@ if dfmaxdate.empty:
     sys.exit()
 
 print(dfmaxdate)
-print(dfmaxdate.iat[0,1])
+print(dfmaxdate.iat[0,1]) """
+
+connect_db_engine_two(database="BinanceData")
 
 sys.exit()
 

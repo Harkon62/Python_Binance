@@ -4,13 +4,11 @@ import sys
 import sys
 import os
 import threading
-import time
 import logging
 
 from connector.binance_api import GetHistoricalData
 from binance.client import Client
 
-from sqlalchemy import create_engine, Table, Column, Integer, String, DateTime, Float, MetaData
 import pandas as pd
 from pandas.io import sql
 

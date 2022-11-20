@@ -1,17 +1,15 @@
 from datetime import datetime
 import getopt
 import sys
-from connector.binance_api import GetHistoricalData
+from binance_api import GetHistoricalData
 
 from binance.client import Client
-from secrets import API_KEY, API_SECRET
+from secretsAPI import API_KEY, API_SECRET
 
-from sqlalchemy import create_engine, Table, Column, Integer, String, DateTime, Float, MetaData 
 import pandas as pd
 from pandas.io import sql
 import sys
 import os
-import time
 
 from modul_db import connect_db_engine, getPairsPrice, ActPriceInTable 
 from modul_TradingView import GetTAfromTV
@@ -39,7 +37,6 @@ def setPairsPrioritaet(dfpairs, dfpairs200):
 
 
     return dfpairs
-
 
 
 def getPairsDataFromExchange(engine):
@@ -78,14 +75,17 @@ if __name__ == '__main__':  # Execute the following code only when executing mai
     print('Number of arguments:', len(sys.argv), 'arguments.')
     print('Argument List:', str(sys.argv))
     
-    #"""
+    # """
     args = sys.argv
     if len(sys.argv) > 1:
         
         print(args[1])
-        if int(args[1]) in range(1,100):
+        if int(args[1]) in range(1,150):
             paraHours = args[1]
             print(paraHours)
+        else:
+            print("Parameter zu groß")
+            sys.exit(0)
             
     else:
         # Verbindung mit Datenbank aufbauen
@@ -97,10 +97,9 @@ if __name__ == '__main__':  # Execute the following code only when executing mai
         engine.dispose()
 
         sys.exit()
-        
-    #"""
-
-    # paraHours = 10
+    # """
+    
+    # paraHours = 12
     
     while True:
 
@@ -149,69 +148,65 @@ if __name__ == '__main__':  # Execute the following code only when executing mai
         for index, row in df_pairs.iterrows():
             pair = row["pairs"]
 
-            # df = GetSelectedData(client, row["pairs"], interval, howLong)
-            df = GetHistoricalData(client, row["pairs"], interval, dayAgo, "")
+            print("--- " + pair + "---- von der Exchange herunterladen")
+            
+            # Download der Kurse von Exchange
+            df, df_Ok = GetHistoricalData(client, row["pairs"], interval, dayAgo, "")
             
             # wenn kein price geholt, dann pair in Liste speichern und for Schleife 
             # auf den naechsten Wert springen
-            if type(df) is bool:
-                # rs = engine.execute("UPDATE binance_pairs SET Prioritaet=2 WHERE pairs='" + 
-                #                         row["pairs"] + "'")
+            if (not df_Ok):
 
                 print(row["pairs"] + " keine Datensaetze !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 # pair ohne Daten in Liste speichern
                 listNull.append(row["pairs"])
+                print(str(forcnt) + " von " + str(df_len) + " " + row["pairs"] + " = 0 Datensaetze")
+                forcnt += 1
+                
                 continue 
 
-            # Zusatz-Info in df einfügen: pair,interval
+
+            # Technische Analyse von TradingView holen und in DB.binance_pairs speichern
+            pairTA = GetTAfromTV(pair, '5m')
+            sqlstr = "UPDATE `binance_pairs` SET `TechnAnalyse`='" + pairTA + "' WHERE pairs = '" + pair + "'"
+            sql.execute(sqlstr, engine) 
+
+
+            # Zusatz-Info in df einfügen: pair,interval,TrendAnalyse
             df.insert(0, "pairs", row["pairs"])
             df.insert(1, "interval", intervalDB)
+            df.insert(2, "trendTA", '')
+            idflen = len(df)
+            df.iloc[idflen -1, 2] = pairTA
             
             # Daten temporaer in binance_price_temp speichern
             df.to_sql("binance_price_temp", engine, if_exists='replace')
             
+            
             # Daten von binance_price_temp nach binance_price verschieben
             # rs = engine.execute('INSERT IGNORE INTO binance_price SELECT * FROM binance_price_temp')
             rs = engine.execute("""
-                    INSERT INTO binance_price(`TimeCET`, `pairs`, `interval`, `open`, `high`, `low`, `close`, `volume`)
+                    INSERT INTO binance_price(`TimeCET`, `pairs`, `interval`, `trendTA`, `open`, `high`, `low`, `close`, `volume`)
                     SELECT * FROM binance_price_temp t
                     ON DUPLICATE KEY UPDATE `open`=t.`open`, `high`=t.`high`, `low`=t.low, `close`=t.close, `volume`=t.volume
                             """)
             
 
-            # Technische Analyse von TradingView holen und in DB.binance_pairs speichern
-            pairTA = GetTAfromTV(pair)
-            sqlstr = "UPDATE `binance_pairs` SET `TechnAnalyse`='" + pairTA + "' WHERE pairs = '" + pair + "'"
-            sql.execute(sqlstr, engine) 
-
-
-            # price in Tabelle DB.binance_gd200 aktualisieren
-            # print("price in Tabelle DB.binance_gd200 aktualisieren")
-            # df_pairsprice = getPairsPrice(pair, engine, "")
-            # print(df_pairsprice.tail())
-            # print(df.tail())
-
             # Sind Datensaetze vorhanden
             idflen = len(df)
             if(idflen > 0) or not df.empty:
+                # price in Auswertungstabellen anpassen
                 ActPriceInTable(engine, df, pair)
 
             
-            # pair in DB.binance_price_down speichern fuer Auswertung m_evaluation_price
+            # pair in DB.binance_price_down speichern fuer Auswertung m_evaluation_price.py
             rs = engine.execute("INSERT INTO binance_price_down(pairs, TechnAnalyse) Values('" + pair + "', '" + pairTA + "')")
 
             print(str(forcnt) + " von " + str(df_len) + " " + row["pairs"] + " = " + str(len(df)) + " Datensaetze")
             forcnt += 1
 
         # Abschlussarbeiten nach Download ------------------------------------------------
-        
-
-
-
-        # Update des aktuellen pair_price mit Auswertungstabellen
-        # binance_gd200, binance_rsima, binance_gd50vross200
-
-        
+       
 
 
         # pairs ohne price aus download in DB-Tabelle und CSV speichern
@@ -221,9 +216,11 @@ if __name__ == '__main__':  # Execute the following code only when executing mai
             df_Null.to_sql("binance_pairsNoPrice", engine, if_exists='replace')
             
             # pairs ohne price in CSV speichern
-            f = open("pairsNull.txt", "w")
+            sDate = dBeginDown.strftime("%Y%m%d_%H%M")
+            
+            f = open("./log/pairsNull_" + sDate + ".txt", "w")
             for pairNull in listNull:
-                f.writelines(pairNull)
+                f.write(pairNull + '\n')
             f.close()
         else:
             rs = engine.execute("DROP TABLE IF EXISTS binance_pairsNoPrice")

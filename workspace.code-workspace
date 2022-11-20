@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "..\\_module"
+		},
+		{
+			"path": "../_connector"
 		}
 	],
 	"settings": {

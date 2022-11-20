@@ -2,73 +2,73 @@
 import sys
 import requests
 import pandas as pd
-from sqlalchemy import create_engine, Table, Column, Integer, String, DateTime, Float, MetaData
+from pandas.io import sql
+# from sqlalchemy import create_engine, Table, Column, Integer, String, DateTime, Float, MetaData
 from modul_db import connect_db_engine
 
 
 
-def get_response(url):
-    response = requests.get(url)
-    response.raise_for_status()  # raises exception when not a 2xx response
-    if response.status_code != 204:
-        return response.json()
-
-def get_exchange_info():
-    base_url = 'https://api.binance.com'
-    endpoint = '/api/v3/exchangeInfo'
-    
-    return get_response(base_url + endpoint)
-
-def create_symbols_list(filter='USDT'):
-    rows = []
-    info = get_exchange_info()
-    pairs_data = info['symbols']
-    full_data_dic = {s['symbol']: s for s in pairs_data if filter in s['symbol']}
-    
-    return full_data_dic.keys()
+# ----------------------------------------------------------------------------------------------------------------------   
+# Vergleich der abgerufenen Daten von der Exchange mit denen in der DB gespeicherten Pairs
+# Staus in der Spalte DB.binance_pairs.binance festhalten, 0 = nicht in der Exchange vorhanden, 
+#                                                          1 = in der Exchange und in DB, 
+#                                                          2 = neu hinzugefuegt
+#
+# in der Python Datei main_get_exchange_info.py werden die Pairs von der Exchange heruntergeladen
 
 
-
-# ----------------------------------------------------------------------------------------------------------------------    
-if __name__ == '__main__':  # Execute the following code only when executing main.py (not when importing it)
+if __name__ == '__main__': 
     
     # Verbindung mit Datenbank aufbauen
     engine = connect_db_engine()
     
+    # Spalte DB.binance_pairs.binance auf 0 setzen
+    sqlstr = "UPDATE `binance_pairs` SET `binance`= 0"
+    sql.execute(sqlstr, engine)
+            
+    # Abfrage definieren zum Vergleich der vorhandenen Pairs mit denen aus der Exchange
+    sqlstrExch = "SELECT `pairs` FROM `binance_pairs_exchange`"
+    df_exchange = pd.read_sql(sqlstrExch, engine)
+    
+    sqlstrDB = "SELECT `pairs` FROM `binance_pairs`"
+    df_db = pd.read_sql(sqlstrDB, engine)
     
     
+    print(df_exchange)
+    df_exchange.to_csv("./csv/df_exchange.csv")
     
-    # pairs von Binance mit Filter (USDT) holen
-    # Rückgabe als Dictionary
-    pairs = create_symbols_list('USDT')
-
-    print(type(pairs))
-
-    # Umwandlung von Dictionary nach Liste
-    keys = list(pairs)
-
-    lskey = []
-    lsPri = []
-    ls_black = ["BULLUSDT", "BEARUSDT", "DOWNUSDT", "UPUSDT", "USDC", "ICPUSDT","PERP", "USSDCUSDT", "USDPUSDT", "USDSBUSDT", "USDSUSDT"]
-
-    for key in pairs:
-        print(key)
-        for nopairs in ls_black:
-            if nopairs in key:
-                key = ""
+    print(df_db)
+    df_db.to_csv("./csv/df_db.csv")
+    
+    # Durchlauf der abgerufenen Crypto-Pairs aus DB.binance_pairs_exchange
+    # Pruefen, ob das Pair in der aktuellen DB.binance_pairs vorhanden ist
+    recCnt = 0
+    for index, row in df_exchange.iterrows():
+        recCnt += 1 
+    
+        # print(row)
         
-        if len(key) > 0 and key.endswith("USDT"):
-            lskey.append(key)
-            lsPri.append(0)
+        pair = []
+        pair.append(row[0])
         
-    lsdic = {
-        "pairs" : lskey,
-        "Prioritaet" : lsPri
-    }    
-
-    df = pd.DataFrame(lsdic)
-
-    # Verbindung mit Datenbank aufbauen
-    engine = connect_db_engine()
-
-    df.to_sql("binance_pairs_exchange", engine, if_exists='replace')
+        # resDF = df_db.isin(pair[0])
+        # print(resDF)
+    
+        # Abfrage in DB.binance_pairs -----------------
+        # print(df_db.eq(df_exchange))
+        sQuery = 'pairs == "' + row[0] + '"'
+        resQ = df_db.query(sQuery)
+        
+        
+        # resDB = df_db.loc[df_exchange.pairs == row[0]]
+        if len(resQ) == 1:
+            # gefunden = Spalte binance = 1
+            sqlstr = "UPDATE `binance_pairs` SET `binance`= 1 WHERE pairs = '" + row[0] + "'"
+            sql.execute(sqlstr, engine)        
+            print(row[0] + " gefunden")
+        else:
+            sqlstr = "INSERT INTO `binance_pairs` (pairs, Prioritaet, binance) VALUES ('" + row[0] + "', 1, 2)"
+            sql.execute(sqlstr, engine)        
+            print(row[0] + " neu in Table")        
+    
+    

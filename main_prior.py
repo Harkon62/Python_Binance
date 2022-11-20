@@ -3,14 +3,11 @@ import getopt
 import sys
 import sys
 import os
-import time
-import logging
 
 from connector.binance_api import GetHistoricalData
 from binance.client import Client
 from secrets import API_KEY, API_SECRET
 
-from sqlalchemy import create_engine, Table, Column, Integer, String, DateTime, Float, MetaData
 import pandas as pd
 from pandas.io import sql
 
@@ -110,34 +107,9 @@ def getPairsDataFromExchange(engine, client, df_pairs, tmp_table):
     return listNull
 
 
-def main(argv):
-
-    inputfile = ''
-    outputfile = ''
-    try:
-        opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
-    except getopt.GetoptError:
-        print('test.py -i <inputfile> -o <outputfile>')
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            print('test.py -i <inputfile> -o <outputfile>')
-            sys.exit()
-        elif opt in ("-i", "--ifile"):
-            inputfile = arg
-        elif opt in ("-o", "--ofile"):
-            outputfile = arg
-
-    print('Input file is "', inputfile)
-    print('Output file is "', outputfile)
-
-
 # ----------------------------------------------------------------------------------------------------------------------
 # Execute the following code only when executing main.py (not when importing it)
 if __name__ == '__main__':
-    # Argumente bei Programmstart auswerten
-
-    # main(sys.argv[1:])
 
     print('Number of arguments:', len(sys.argv), 'arguments.')
     print('Argument List:', str(sys.argv))

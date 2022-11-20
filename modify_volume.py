@@ -1,6 +1,8 @@
 # https://stackoverflow.com/questions/66295187/how-do-i-get-all-the-prices-history-with-binance-api-for-a-crypto-using-python
 
 import pandas as pd
+from datetime import timedelta
+
 from backup.modul_db import getMaxDateInDB
     
 
@@ -86,3 +88,41 @@ def set_DB_AVG_Volumen(df_pairsprice, pair, engine):
         return df_pairsVol.iat[0, 1]
     else:
         return ""
+
+
+
+def getVolumeChange(df, timeStep, stepCnt):
+    
+    # TimeStep in Minuten umrechnen
+    if timeStep == '15m':
+        minStep = 15
+    if timeStep == '30m':
+        minStep = 30
+    elif timeStep == '1h':
+        minStep = 60
+    elif timeStep == '2h':
+        minStep = 120
+    
+    # list fuer Werte und Column-Namen
+    stepValue = []
+    stepName = []
+    
+    # neuestes Datum ermitteln
+    beginDate = df.index.max()
+    
+    for i in range(0, stepCnt):
+        endDate = beginDate - timedelta(minutes=minStep)
+    
+        df_tmp =  df[(df.index <= beginDate) & (df.index >= endDate)]
+        
+        Vol = df_tmp.volume.sum()
+        
+        stepValue.append(beginDate)
+        stepName.append('Step' + str(i + 1))
+        
+        stepValue.append(Vol)
+        stepName.append(timeStep + str(i + 1))
+        
+        beginDate = endDate
+        
+    return stepValue, stepName

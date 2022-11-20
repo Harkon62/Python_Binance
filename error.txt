@@ -1,0 +1,621 @@
+
+Auswertung starten mit MFTUSDT ###############################################
+
+Daten aus DB.binance_price  holen
+Modul getPairsPrice gestartet ###########################################
+                    getPairsPrice: Anzahl pairs 2542
+                    beendet ###########################################
+Pair-Volumen pro Tag ermitteln
+Indikatoren in df_pairsprice setzen
+Modul GetGD200Data gestartet mit Symbol=MFTUSDT ###########################################
+                   beendet ###########################################
+Modul Get3CandleUp gestartet mit Symbol=MFTUSDT ###########################################
+                   beendet ###########################################
+----Auswertung beendet mit MFTUSDT ###############################################
+_main_: pair aus DB.binance_price_down löschen
+_main_: 2022-11-06 19:52:57.590805 Datensatz MFTUSDT beendet
+Sleep 2, warte
+_main_: 2022-11-06 19:52:59.771409 Auswertung starten
+
+Auswertung starten mit DENTUSDT ###############################################
+
+Daten aus DB.binance_price  holen
+Modul getPairsPrice gestartet ###########################################
+Traceback (most recent call last):
+  File "D:\userData\SynologyDrive\Projekte\Python\Projekt_Python_Binance\m_evaluation_price.py", line 324, in <module>
+    pairs_auswertung(pair, pairTA, engine)
+  File "D:\userData\SynologyDrive\Projekte\Python\Projekt_Python_Binance\m_evaluation_price.py", line 35, in pairs_auswertung
+    df_pairsprice = getPairsPrice(pair, engine, "")
+  File "D:\userData\SynologyDrive\Projekte\Python\_module\modul_db.py", line 129, in getPairsPrice
+    df_pairsprice = pd.read_sql_query(sqlstr, engine)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\sql.py", line 399, in read_sql_query
+    return pandas_sql.read_query(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\sql.py", line 1554, in read_query
+    result = self.execute(*args)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\sql.py", line 1399, in execute
+    return self.connectable.execution_options().execute(*args, **kwargs)
+  File "<string>", line 2, in execute
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\util\deprecations.py", line 401, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 3146, in execute
+    return connection.execute(statement, *multiparams, **params)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1274, in execute
+    return self._exec_driver_sql(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1578, in _exec_driver_sql
+    ret = self._execute_context(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1845, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 2030, in _handle_dbapi_exception
+    util.raise_(exc_info[1], with_traceback=exc_info[2])
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1802, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\default.py", line 732, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\cursor.py", line 551, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\cursor.py", line 466, in _handle_result
+    self._handle_resultset()
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\cursor.py", line 960, in _handle_resultset
+    (self._rows, eof) = self._connection.get_rows()
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\connection.py", line 443, in get_rows
+    rows = self._protocol.read_text_result(self._socket, self._server_version, count=count)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\protocol.py", line 325, in read_text_result
+    packet = sock.recv()
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\network.py", line 262, in recv_plain
+    read = self.sock.recv_into(packet_view, rest)
+KeyboardInterrupt
+^C
+D:\userData\SynologyDrive\Projekte\Python\Projekt_Python_Binance>Bat_Down.bat
+ECHO ist ausgeschaltet (OFF).
+ECHO ist ausgeschaltet (OFF).
+Number of arguments: 2 arguments.
+Argument List: ['main.py', '144']
+144
+144
+144 hours ago UTC
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+1 von 338 BTTCUSDT = 1728 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+2 von 338 RADUSDT = 1728 Datensaetze
+Traceback (most recent call last):
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1802, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\default.py", line 732, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\cursor.py", line 551, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\connection.py", line 490, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\connection.py", line 395, in _handle_result
+    raise errors.get_exception(packet)
+mysql.connector.errors.ProgrammingError: 1146 (42S02): Table 'BinanceData.binance_price_temp' doesn't exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\userData\SynologyDrive\Projekte\Python\Projekt_Python_Binance\main.py", line 175, in <module>
+    rs = engine.execute("""
+  File "<string>", line 2, in execute
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\util\deprecations.py", line 401, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 3146, in execute
+    return connection.execute(statement, *multiparams, **params)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1274, in execute
+    return self._exec_driver_sql(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1578, in _exec_driver_sql
+    ret = self._execute_context(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1845, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 2026, in _handle_dbapi_exception
+    util.raise_(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1802, in _execute_context
+    self.dialect.do_execute(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\default.py", line 732, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\cursor.py", line 551, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\connection.py", line 490, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\connection.py", line 395, in _handle_result
+    raise errors.get_exception(packet)
+sqlalchemy.exc.ProgrammingError: (mysql.connector.errors.ProgrammingError) 1146 (42S02): Table 'BinanceData.binance_price_temp' doesn't exist
+[SQL:
+                    INSERT INTO binance_price(`TimeCET`, `pairs`, `interval`, `open`, `high`, `low`, `close`, `volume`)
+                    SELECT * FROM binance_price_temp t
+                    ON DUPLICATE KEY UPDATE `open`=t.`open`, `high`=t.`high`, `low`=t.low, `close`=t.close, `volume`=t.volume
+                            ]
+(Background on this error at: https://sqlalche.me/e/14/f405)
+
+
+182 von 338 FLUXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+183 von 338 BICOUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+184 von 338 MCUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+185 von 338 SANTOSUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+186 von 338 RNDRUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+187 von 338 PYRUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+188 von 338 PLAUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+189 von 338 AMPUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+190 von 338 JASMYUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+191 von 338 VGXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+192 von 338 POLYUSDT = 0 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+193 von 338 ALICEUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+194 von 338 GRTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+195 von 338 PONDUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+196 von 338 STXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+197 von 338 NKNUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+198 von 338 HBARUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+199 von 338 RVNUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+200 von 338 RENUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+201 von 338 XTZUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+202 von 338 ARPAUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+203 von 338 BEAMUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+204 von 338 CVCUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+205 von 338 FUNUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+206 von 338 MFTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+207 von 338 DENTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+208 von 338 TOMOUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+209 von 338 MTLUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+210 von 338 BANDUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+211 von 338 ANKRUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+212 von 338 RLCUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+213 von 338 TROYUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+214 von 338 CTSIUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+215 von 338 SOLUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+216 von 338 DATAUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+217 von 338 WTCUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+218 von 338 STPTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+219 von 338 COTIUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+220 von 338 BCHUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+221 von 338 MBLUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+222 von 338 BTSUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+223 von 338 TCTUSDT = 0 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+224 von 338 OGNUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+225 von 338 EURUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+226 von 338 FTTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+227 von 338 VITEUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+228 von 338 BNTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+229 von 338 HIVEUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+230 von 338 DUSKUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+231 von 338 GTOUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+232 von 338 LINKUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+233 von 338 VETUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+234 von 338 ICXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+235 von 338 ETCUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+236 von 338 TRXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+237 von 338 ONTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+238 von 338 WAVESUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+239 von 338 XLMUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+240 von 338 EOSUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+241 von 338 XRPUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+242 von 338 ADAUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+243 von 338 QTUMUSDT = 11 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+244 von 338 NEOUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+245 von 338 ETHUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+246 von 338 IOTAUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+247 von 338 DOGEUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+248 von 338 ONGUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+249 von 338 ZRXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+250 von 338 ALGOUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+251 von 338 FTMUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+252 von 338 ONEUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+253 von 338 TFUELUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+254 von 338 ATOMUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+255 von 338 ENJUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+256 von 338 HOTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+257 von 338 THETAUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+258 von 338 DASHUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+259 von 338 CELRUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+260 von 338 IOSTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+261 von 338 ZECUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+262 von 338 XMRUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+263 von 338 BATUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+264 von 338 OMGUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+265 von 338 CHRUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+266 von 338 ARDRUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+267 von 338 STMXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+268 von 338 GMXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+269 von 338 SKLUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+270 von 338 XEMUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+271 von 338 ROSEUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+272 von 338 UNFIUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+273 von 338 STRAXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+274 von 338 JUVUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+275 von 338 DNTUSDT = 0 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+276 von 338 AKROUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+277 von 338 AUDIOUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+278 von 338 FILUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+279 von 338 NEARUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+280 von 338 AAVEUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+281 von 338 ALPHAUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+282 von 338 AXSUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+283 von 338 ORNUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+284 von 338 PSGUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+285 von 338 REEFUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+286 von 338 BADGERUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+287 von 338 ACMUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+288 von 338 DODOUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+289 von 338 SFPUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+290 von 338 LITUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+291 von 338 FIROUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+292 von 338 1INCHUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+293 von 338 TWTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+294 von 338 BTCSTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+295 von 338 RIFUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+296 von 338 CELOUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+297 von 338 ASRUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+298 von 338 ATMUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+299 von 338 OGUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+300 von 338 CKBUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+301 von 338 FLMUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+302 von 338 AVAXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+303 von 338 OXTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+304 von 338 MANAUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+305 von 338 STORJUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+306 von 338 DCRUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+307 von 338 SXPUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+308 von 338 GBPUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+309 von 338 DGBUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+310 von 338 YFIUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+311 von 338 SNXUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+312 von 338 SCUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+313 von 338 COMPUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+314 von 338 PNTUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+315 von 338 LRCUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+316 von 338 REPUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+317 von 338 KNCUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+318 von 338 ZENUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+319 von 338 BALUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+320 von 338 BLZUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+321 von 338 KMDUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+322 von 338 NBSUSDT = 0 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+323 von 338 UNIUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+324 von 338 BELUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+325 von 338 DIAUSDT = 12 Datensaetze
+Modul GetTAfromTV          gestartet  ###########################################
+                           beendet  ###########################################
+Traceback (most recent call last):
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1702, in _execute_context
+    context = constructor(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\default.py", line 1159, in _init_statement
+    self.cursor = self.create_cursor()
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\default.py", line 1361, in create_cursor
+    return self.create_default_cursor()
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\default.py", line 1364, in create_default_cursor
+    return self._dbapi_connection.cursor()
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\pool\base.py", line 1083, in cursor
+    return self.dbapi_connection.cursor(*args, **kwargs)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\connection.py", line 809, in cursor
+    raise errors.OperationalError("MySQL Connection not available.")
+mysql.connector.errors.OperationalError: MySQL Connection not available.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\userData\SynologyDrive\Projekte\Python\Projekt_Python_Binance\main.py", line 185, in <module>
+    sql.execute(sqlstr, engine)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\sql.py", line 184, in execute
+    return pandas_sql.execute(*args)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\sql.py", line 1399, in execute
+    return self.connectable.execution_options().execute(*args, **kwargs)
+  File "<string>", line 2, in execute
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\util\deprecations.py", line 401, in warned
+    return fn(*args, **kwargs)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 3146, in execute
+    return connection.execute(statement, *multiparams, **params)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1274, in execute
+    return self._exec_driver_sql(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1578, in _exec_driver_sql
+    ret = self._execute_context(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1708, in _execute_context
+    self._handle_dbapi_exception(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 2026, in _handle_dbapi_exception
+    util.raise_(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\util\compat.py", line 207, in raise_
+    raise exception
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\base.py", line 1702, in _execute_context
+    context = constructor(
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\default.py", line 1159, in _init_statement
+    self.cursor = self.create_cursor()
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\default.py", line 1361, in create_cursor
+    return self.create_default_cursor()
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\engine\default.py", line 1364, in create_default_cursor
+    return self._dbapi_connection.cursor()
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sqlalchemy\pool\base.py", line 1083, in cursor
+    return self.dbapi_connection.cursor(*args, **kwargs)
+  File "C:\Users\harko\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\mysql\connector\connection.py", line 809, in cursor
+    raise errors.OperationalError("MySQL Connection not available.")
+sqlalchemy.exc.OperationalError: (mysql.connector.errors.OperationalError) MySQL Connection not available.
+[SQL: UPDATE `binance_pairs` SET `TechnAnalyse`='SELL' WHERE pairs = 'EGLDUSDT']
+(Background on this error at: https://sqlalche.me/e/14/e3q8)

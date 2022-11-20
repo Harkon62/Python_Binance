@@ -2,9 +2,10 @@
 from sqlalchemy import true
 
 from modify_gd200 import GetGD200Data, GetGD200Vol
+from modul_3candleup import Get3CandleUp
 from modify_gd50crross200 import GetGD50cross200
 from modul_interval import pairs_interval_change_quarter, pairs_interval_rangliste, pairs_interval_positiv
-from modify_volume import set_DB_AVG_Volumen, setVolumeSignal
+from modify_volume import set_DB_AVG_Volumen, setVolumeSignal, getVolumeChange
 from modul_rsima import GetRSIMAData
 
 from modul_freqtrade import SetPairsInFreqtradeFromDB
@@ -117,9 +118,10 @@ def pairs_auswertung(pair, pairTA, engine):
     # Rueckgabe Liste: startDate, pairs, startClose, endDate, endClose, endDiff
 
     # DB.binance_gd200 von pair leeren
-    sqlstr = "DELETE FROM binance_gd200 WHERE (pairs = '" + pair + "')"
+    if checkTableExists(engine, "binance_gd200"):
+        sqlstr = "DELETE FROM binance_gd200 WHERE (pairs = '" + pair + "')"
                                             #  OR (`endDiff` < 0.5)"
-    sql.execute(sqlstr, engine)
+        sql.execute(sqlstr, engine)
 
     listGD = GetGD200Data(df_pairsprice, pair)
 
@@ -132,20 +134,22 @@ def pairs_auswertung(pair, pairTA, engine):
             print("Differenz GD200 bei Spalten")
             
         dfgd = pd.DataFrame([listGD], columns=["startDate", "pairs", "startClose", "endDate", \
-                                                   "endClose", "endDiff", "gdlowerCnt", "Volbefore", "Volafter"])
+                                                   "endClose", "endDiff", "gdlowerCnt2016", "gdlowerCnt144", "Volbefore", "Volafter"])
 
         # Daten in binance_gd200 speichern
         dfgd.to_sql("binance_gd200", engine, if_exists='append')
 
         """"
         print("Telegram Nachricht senden ?")
-        # Aktualitaet der Nachricht pruefen, nicht aelter als ?? min und Trendanalyse
+        
         iprice = listGD[2]
-
+        
+        # Aktualitaet der Nachricht pruefen, nicht aelter als ?? min und Trendanalyse
         ddatenow = datetime.now()
         ddatepair = listGD[0]
         ddateborder = ddatenow - timedelta(minutes=30)
         
+        # if Daten aktuell & STRONG_BUY/BUY & price > 0.0001
         if (ddatepair > ddateborder) and ((pairTA == "STRONG_BUY") or (pairTA == "BUY")) and (iprice > 0.0001):
             # Send message to telegram
             telegram_bot_sendtext(pair + " " + str(listGD[0]))
@@ -222,12 +226,44 @@ def pairs_auswertung(pair, pairTA, engine):
     """
 
 
+    # 8. M3 gruene Kerzen
+    list3c = Get3CandleUp(df_pairsprice, pair, pairTA)
+    if(len(list3c) > 0):
+
+        listColumns = ["symbol", "Trend", "C1close", "C1open", "C2close", "C2open", "C3close", "C3open", "C1lowma", "C3low", "C1ma50", "C1high", "CDiff", "CDiffProz", "Date3c"]
+        df_3c = pd.DataFrame([list3c], columns=listColumns)
+        df_3c.set_index('Date3c', inplace=True)
+        
+        print(df_3c)
+        
+        # Daten in binance_3candle speichern
+        df_3c.to_sql("binance_3candle", engine, if_exists='append')
+    
+    
+
+    # 8. Volumen in Step speichern
+    listVolTime = ['30m', '1h', '2h']
+    steps = 5
+    
+    stepValue, stepName = getVolumeChange(df_pairsprice, listVolTime[0], steps)
+    df_Vol = pd.DataFrame([stepValue], columns=stepName)
+    df_Vol.insert(0, 'pairs', pair)
+    df_Vol.insert(1, 'pairsTA', pairTA)
+    
+    
+    # Daten in binance_VolChange speichern
+    df_Vol.to_sql("binance_VolChange", engine, if_exists='append')
+    
+    
+    
+    
     print("----Auswertung beendet mit " + pair + " ###############################################")
 
 
 
 # Execute the following code only when executing main.py (not when importing it) ----------------------------------------------------------------------------------
 if __name__ == '__main__':
+    
     # uebergebene Parameter auswerten -------------------------------------------
     # Parameter 1 = loop Durchlauf nach ? Sek. wiederholen
     # Parameter 2 = onlyGD = nur GD200 auswerten
@@ -266,22 +302,20 @@ if __name__ == '__main__':
         # Tabellen leeren
         empty_DB_Table(engineEmpty)
 
-        
-        # zu Testzwecken alle pairs in die DB.binance_price_down schieben
-        # sqlstr = "INSERT INTO `binance_price_down` SELECT pairs FROM `binance_pairs`"
-        # engineEmpty.execute(sqlstr)
-
 
         # Datenbankverbindung schliessen
         engineEmpty.dispose()
 
 
-
         # SQL Abfragen fuer Daten aus DB.binance_pairs vorbelegen --------------------------------------------------------------
         #sqlstrEins = "SELECT pairs, Prioritaet FROM binance_pairs WHERE Prioritaet=1"
+        
+        # pairs mit heruntergeladenen Daten aus DB.binance_pairs_down selektieren
         sqlstrEins = "SELECT pairs, TechnAnalyse FROM binance_price_down LIMIT 1"
 
+        # sind pairs vorhanden, die noch nicht heruntergeladen wurden
         sqlstrNull = "SELECT pairs, Prioritaet FROM binance_pairs WHERE Prioritaet=0"
+        
 
         # Datenbankverbindung aufbauen ------------------------------------------
         print("_main_: " + str(datetime.now(tz=None)) + " Datenbankverbindung aufbauen")
@@ -302,13 +336,15 @@ if __name__ == '__main__':
 
                 # pair = "UTKUSDT"
                 
-                #Auswertung starten
+                # --------------------------------------------------------------------------------------
+                # Auswertung starten -------------------------------------------------------------------
                 print("_main_: " + str(datetime.now(tz=None)) + " Auswertung starten")
                 pairs_auswertung(pair, pairTA, engine)
                 
 
                 # pair aus DB.binance_price_down löschen, Bearbeitung fertig
                 print("_main_: pair aus DB.binance_price_down löschen")
+                
                 engine.execute("DELETE FROM binance_price_down WHERE pairs='" + pair + "'")
 
                 print("_main_: " + str(datetime.now(tz=None)) + " Datensatz " + pair + " beendet")
