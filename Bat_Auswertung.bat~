@@ -1,5 +1,0 @@
-@echo off & setlocal
-echo %1
-REM start /d D:\...\Projekte\Python\Projekt_Python_Binance /min python m_evaluation_price.py loop
-python m_evaluation_price.py %1 %2
-pause

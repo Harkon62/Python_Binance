@@ -8,6 +8,7 @@ import logging
 
 from connector.binance_api import GetHistoricalData
 from binance.client import Client
+from secrets import API_KEY, API_SECRET
 
 from sqlalchemy import create_engine, Table, Column, Integer, String, DateTime, Float, MetaData
 import pandas as pd
@@ -174,9 +175,7 @@ if __name__ == '__main__':
         dBeginDown = datetime.now()
 
         # Verbindung mit Binance-API herstellen
-        api_key = "YRh7OHf8IUjumPzc27pVsE4VJKdR8kT7a9oRxDtREpMsivQ6wZ6XwXH3eVcFDHpc"
-        api_secret = "9CCnqUKby6t6PDbIYj7vBBXg7WNXsUIXnrxpA3vIttKfXGuVmiLpTsqsFZu1fdkH"
-        client = Client(api_key, api_secret)
+        client = Client(API_KEY, API_SECRET)
 
         # Setup der Variablen
         howLong = 1

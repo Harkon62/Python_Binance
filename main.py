@@ -4,6 +4,7 @@ import sys
 from connector.binance_api import GetHistoricalData
 
 from binance.client import Client
+from secrets import API_KEY, API_SECRET
 
 from sqlalchemy import create_engine, Table, Column, Integer, String, DateTime, Float, MetaData 
 import pandas as pd
@@ -77,7 +78,7 @@ if __name__ == '__main__':  # Execute the following code only when executing mai
     print('Number of arguments:', len(sys.argv), 'arguments.')
     print('Argument List:', str(sys.argv))
     
-    """
+    #"""
     args = sys.argv
     if len(sys.argv) > 1:
         
@@ -97,9 +98,9 @@ if __name__ == '__main__':  # Execute the following code only when executing mai
 
         sys.exit()
         
-    """
+    #"""
 
-    paraHours = 10
+    # paraHours = 10
     
     while True:
 
@@ -112,9 +113,7 @@ if __name__ == '__main__':  # Execute the following code only when executing mai
         
 
         # Verbindung mit Binance-API herstellen
-        api_key = "YRh7OHf8IUjumPzc27pVsE4VJKdR8kT7a9oRxDtREpMsivQ6wZ6XwXH3eVcFDHpc"
-        api_secret = "9CCnqUKby6t6PDbIYj7vBBXg7WNXsUIXnrxpA3vIttKfXGuVmiLpTsqsFZu1fdkH"
-        client = Client(api_key, api_secret)
+        client = Client(API_KEY, API_SECRET)
 
 
         # Setup der Variablen
@@ -139,7 +138,7 @@ if __name__ == '__main__':  # Execute the following code only when executing mai
         df_pairs200 = pd.read_sql('SELECT pairs FROM `binance_gd200` ORDER BY `startDate` DESC', engine)
         
 
-        # pairs aus DB holen und nach Prioritaet fuer den Downloads setzen
+        # pairs aus DB nach Prioritaet fuer den Downloads setzen
         df_pairs = setPairsPrioritaet(df_pairs, df_pairs200)
 
             
